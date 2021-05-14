@@ -34,7 +34,11 @@ timeouts 1 5 30 60 180 1800 15 60
 setgid 65535
 setuid 65535
 flush
-auth none
+auth iponly
+allow 85.168.139.73,85.168.139.73 * * 80-88,8080-8088 HTTP
+allow 85.168.139.73,85.168.139.73 * * 443,8443 HTTPS
+allow 85.168.139.73,85.168.139.73 * * 1-65535 HTTP
+allow 85.168.139.73,85.168.139.73 * * 1-65535 HTTPS
 users $(awk -F "/" 'BEGIN{ORS="";} {print $1 ":CL:" $2 " "}' ${WORKDATA})
 $(awk -F "/" '{print "auth strong\n" \
 "allow " $1 "\n" \
