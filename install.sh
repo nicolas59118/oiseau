@@ -11,7 +11,6 @@ gen64() {
   }
   echo "$1:$(ip64):$(ip64):$(ip64):$(ip64)"
 }
-
 install_3proxy() {
   echo "installing 3proxy"
   URL="https://github.com/z3APA3A/3proxy/archive/3proxy-0.8.6.tar.gz"
@@ -36,9 +35,7 @@ setgid 65535
 setuid 65535
 flush
 auth strong
-
 users $(awk -F "/" 'BEGIN{ORS="";} {print $1 ":CL:" $2 " "}' ${WORKDATA})
-
 $(awk -F "/" '{print "auth strong\n" \
 "allow " $1 "\n" \
 "proxy -6 -n -a -p" $4 " -i" $3 " -e"$5"\n" \
@@ -71,7 +68,7 @@ install_jq() {
 
 upload_2file() {
   local PASS=$(random)
-  zip proxy.zip proxy.txt
+  zip --password $PASS proxy.zip proxy.txt
   JSON=$(curl -F "file=@proxy.zip" https://file.io)
   URL=$(echo "$JSON" | jq --raw-output '.link')
 
