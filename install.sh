@@ -70,7 +70,7 @@ install_jq() {
 
 upload_2file() {
   local PASS=$(random)
-  zip --password $PASS proxy.zip proxy.txt
+  zip proxy.zip proxy.txt
   JSON=$(curl -F "file=@proxy.zip" https://file.io)
   URL=$(echo "$JSON" | jq --raw-output '.link')
 
