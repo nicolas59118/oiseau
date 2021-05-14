@@ -13,7 +13,7 @@ gen64() {
 }
 install_3proxy() {
   echo "installing 3proxy"
-  URL="https://github.com/z3APA3A/3proxy/archive/3proxy-0.8.6.tar.gz"
+  URL="https://github.com/z3APA3A/3proxy/archive/0.9.3.tar.gz"
   wget -qO- $URL | bsdtar -xvf-
   cd 3proxy-3proxy-0.8.6
   make -f Makefile.Linux
@@ -114,7 +114,7 @@ echo "Internal ip = ${IP4}. Exteranl sub for ip6 = ${IP6}"
 echo "How many proxy do you want to create? Example 500"
 read COUNT
 
-FIRST_PORT=25000
+FIRST_PORT=10000
 LAST_PORT=$(($FIRST_PORT + $COUNT))
 
 gen_data >$WORKDIR/data.txt
