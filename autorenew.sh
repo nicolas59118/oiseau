@@ -96,7 +96,7 @@ echo "-----------------------------"
 echo "working folder = /home/proxy-installer"
 WORKDIR="/home/proxy-installer"
 WORKDATA="${WORKDIR}/data.txt"
-mkdir $WORKDIR && cd $_
+cd $_
 
 
 echo "-----------------------------"
@@ -164,8 +164,6 @@ echo "-----------------------------"
 gen_3proxy >/usr/local/etc/3proxy/3proxy.cfg
 
 
-rm -rf /home/proxy-installer/boot_iptables.sh
-rm -rf /home/proxy-installer/boot_ifconfig.sh
 
 
 echo "-----------------------------"
