@@ -121,6 +121,10 @@ chmod +x boot_*.sh /etc/rc.local
 
 gen_3proxy >/usr/local/etc/3proxy/3proxy.cfg
 
+
+rm -rf /home/proxy-installer/boot_iptables.sh
+rm -rf /home/proxy-installer/boot_ifconfig.sh
+
 cat >>/etc/rc.local <<EOF
 bash ${WORKDIR}/boot_iptables.sh
 bash ${WORKDIR}/boot_ifconfig.sh
