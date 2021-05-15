@@ -28,8 +28,8 @@ install_3proxy() {
 gen_3proxy() {
   cat <<EOF
 daemon
-maxconn 10000
-nscache 65536
+maxconn 64
+nscache 655360
 timeouts 1 5 30 60 180 1800 15 60
 setgid 65535
 setuid 65535
@@ -68,8 +68,7 @@ install_jq() {
 
 upload_2file() {
   local PASS=$(random)
-  zip proxy.zip proxy.txt
-  JSON=$(curl -F "file=@proxy.zip" https://file.io)
+  JSON=$(curl -F "file=@proxy.txt" https://file.io)
   URL=$(echo "$JSON" | jq --raw-output '.link')
 
   echo "Proxy is ready! Format IP:PORT:LOGIN:PASS"
@@ -79,7 +78,7 @@ upload_2file() {
 
 gen_data() {
   seq $FIRST_PORT $LAST_PORT | while read port; do
-    echo "user/pass/$IP4/$port/$(gen64 $IP6)"
+    echo "usr/pass/$IP4/$port/$(gen64 $IP6)"
   done
 }
 
