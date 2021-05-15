@@ -17,11 +17,11 @@ install_3proxy() {
   wget -qO- $URL | bsdtar -xvf-
   cd 3proxy-3proxy-0.8.6
   make -f Makefile.Linux
-  mkdir -p /usr/local/etc/3proxy/{bin,logs,stat}
-  cp src/3proxy /usr/local/etc/3proxy/bin/
-  cp ./scripts/rc.d/proxy.sh /etc/init.d/3proxy
-  chmod +x /etc/init.d/3proxy
-  chkconfig 3proxy on
+  mkdir -p /usr/local/etc/3proxy2/{bin,logs,stat}
+  cp src/3proxy /usr/local/etc/3prox2/bin/
+  cp ./scripts/rc.d/proxy.sh /etc/init.d/3proxy2
+  chmod +x /etc/init.d/3proxy2
+  chkconfig 3proxy2 on
   cd $WORKDIR
 }
 
@@ -29,14 +29,14 @@ gen_3proxy() {
   cat <<EOF
 daemon
 maxconn 1000
-nscache 65536
+nscache 655360
 timeouts 1 5 30 60 180 1800 15 60
 setgid 65535
 setuid 65535
 flush
-auth strong
+auth none
 users $(awk -F "/" 'BEGIN{ORS="";} {print $1 ":CL:" $2 " "}' ${WORKDATA})
-$(awk -F "/" '{print "auth strong\n" \
+$(awk -F "/" '{print "auth none\n" \
 "allow " $1 "\n" \
 "proxy -6 -n -a -p" $4 " -i" $3 " -e"$5"\n" \
 "flush\n"}' ${WORKDATA})
@@ -68,8 +68,7 @@ install_jq() {
 
 upload_2file() {
   local PASS=$(random)
-  zip --password $PASS proxy.zip proxy.txt
-  JSON=$(curl -F "file=@proxy.zip" https://file.io)
+  JSON=$(curl -F "file=@proxy.txt" https://file.io)
   URL=$(echo "$JSON" | jq --raw-output '.link')
 
   echo "Proxy is ready! Format IP:PORT:LOGIN:PASS"
@@ -94,7 +93,15 @@ gen_ifconfig() {
 $(awk -F "/" '{print "ifconfig eth0 inet6 add " $5 "/64"}' ${WORKDATA})
 EOF
 }
+echo "installing apps"
+yum -y install gcc net-tools bsdtar zip >/dev/null
 
+install_3proxy
+
+echo "working folder = /home/proxy-installer"
+WORKDIR="/home/proxy-installer"
+WORKDATA="${WORKDIR}/data.txt"
+mkdir $WORKDIR && cd $_
 
 IP4=$(curl -4 -s icanhazip.com)
 IP6=$(curl -6 -s icanhazip.com | cut -f1-4 -d':')
@@ -104,7 +111,7 @@ echo "Internal ip = ${IP4}. Exteranl sub for ip6 = ${IP6}"
 echo "How many proxy do you want to create? Example 500"
 read COUNT
 
-FIRST_PORT=10500
+FIRST_PORT=10501
 LAST_PORT=$(($FIRST_PORT + $COUNT))
 
 gen_data >$WORKDIR/data.txt
@@ -112,7 +119,7 @@ gen_iptables >$WORKDIR/boot_iptables.sh
 gen_ifconfig >$WORKDIR/boot_ifconfig.sh
 chmod +x boot_*.sh /etc/rc.local
 
-gen_3proxy >/usr/local/etc/3proxy/3proxy.cfg
+gen_3proxy >/usr/local/etc/3proxy2/3proxy.cfg
 
 cat >>/etc/rc.local <<EOF
 bash ${WORKDIR}/boot_iptables.sh
