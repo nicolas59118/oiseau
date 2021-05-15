@@ -34,7 +34,15 @@ EOF
 
 
 
+upload_2file() {
+  local PASS=$(random)
+  JSON=$(curl -F "file=@proxy.txt" https://file.io)
+  URL=$(echo "$JSON" | jq --raw-output '.link')
 
+  echo "Proxy is ready! Format IP:PORT:LOGIN:PASS"
+  echo "Download zip archive from: ${URL}"
+  echo "Password: ${PASS}"
+}
 
 gen_data() {
   seq $FIRST_PORT $LAST_PORT | while read port; do
@@ -42,9 +50,17 @@ gen_data() {
   done
 }
 
+gen_iptables() {
+  cat <<EOF
+    $(awk -F "/" '{print "iptables -I INPUT -p tcp --dport " $4 "  -m state --state NEW -j ACCEPT"}' ${WORKDATA})
+EOF
+}
 
-
-
+gen_ifconfig() {
+  cat <<EOF
+$(awk -F "/" '{print "ifconfig eth0 inet6 add " $5 "/64"}' ${WORKDATA})
+EOF
+}
 
 
 
@@ -75,8 +91,8 @@ chmod +x boot_*.sh /etc/rc.local
 gen_3proxy >/usr/local/etc/3proxy/3proxy.cfg
 
 cat >>/etc/rc.local <<EOF
-bash ${WORKDIR}/boot_iptables.sh
-bash ${WORKDIR}/boot_ifconfig.sh
+# bash ${WORKDIR}/boot_iptables.sh
+# bash ${WORKDIR}/boot_ifconfig.sh
 ulimit -n 20096
 service 3proxy restart
 EOF
