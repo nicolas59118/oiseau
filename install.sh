@@ -7,9 +7,9 @@ random() {
 array=(1 2 3 4 5 6 7 8 9 0 a b c d e f)
 gen64() {
   ip64() {
-    echo "${array[$RANDOM % 16]}${array[$RANDOM % 16]}"
+    echo "${array[$RANDOM % 16]}${array[$RANDOM % 16]}${array[$RANDOM % 16]}${array[$RANDOM % 16]}"
   }
-  echo "$1:$(ip64):$(ip64)"
+  echo "$1:$(ip64):$(ip64):$(ip64):$(ip64)"
 }
 install_3proxy() {
   echo "installing 3proxy"
@@ -28,7 +28,7 @@ install_3proxy() {
 gen_3proxy() {
   cat <<EOF
 daemon
-maxconn 64
+maxconn 1000
 nscache 655360
 timeouts 1 5 30 60 180 1800 15 60
 setgid 65535
@@ -78,7 +78,7 @@ upload_2file() {
 
 gen_data() {
   seq $FIRST_PORT $LAST_PORT | while read port; do
-    echo "usr/pass/$IP4/$port/$(gen64 $IP6)"
+    echo "usr$(random)/pass$(random)/$IP4/$port/$(gen64 $IP6)"
   done
 }
 
