@@ -111,7 +111,7 @@ IP6=$(curl -6 -s icanhazip.com | cut -f1-4 -d':')
 
 
 
-COUNT=64
+COUNT=32
 
 FIRST_PORT=10000
 LAST_PORT=$(($FIRST_PORT + $COUNT))
@@ -123,7 +123,7 @@ chmod +x boot_*.sh /etc/rc.local
 
 gen_3proxy >/usr/local/etc/3proxy/3proxy.cfg
 
-cat >>/etc/rc.local <<EOF
+cat >/etc/rc.local <<EOF
 bash ${WORKDIR}/boot_iptables.sh
 bash ${WORKDIR}/boot_ifconfig.sh
 ulimit -n 19048
