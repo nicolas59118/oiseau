@@ -42,11 +42,7 @@ gen_data() {
   done
 }
 
-gen_iptables() {
-  cat <<EOF
-    $(awk -F "/" '{print "iptables -I INPUT -p tcp --dport " $4 "  -m state --state NEW -j ACCEPT"}' ${WORKDATA})
-EOF
-}
+
 
 gen_ifconfig() {
   cat <<EOF
