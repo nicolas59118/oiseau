@@ -16,7 +16,7 @@ gen64() {
 gen_3proxy() {
   cat <<EOF
 daemon
-maxconn 1024000000000
+maxconn 24796
 nscache 6553600
 timeouts 1 5 30 60 180 1800 15 60
 setgid 65535
