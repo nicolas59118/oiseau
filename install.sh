@@ -28,8 +28,8 @@ install_3proxy() {
 gen_3proxy() {
   cat <<EOF
 daemon
-maxconn 102400
-nscache 655360
+maxconn 1024000000000
+nscache 6553600
 timeouts 1 5 30 60 180 1800 15 60
 setgid 65535
 setuid 65535
@@ -124,7 +124,7 @@ gen_3proxy >/usr/local/etc/3proxy/3proxy.cfg
 cat >>/etc/rc.local <<EOF
 bash ${WORKDIR}/boot_iptables.sh
 bash ${WORKDIR}/boot_ifconfig.sh
-ulimit -n 19048
+ulimit -n 1024000000
 service 3proxy start
 EOF
 
