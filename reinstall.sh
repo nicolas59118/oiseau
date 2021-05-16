@@ -11,25 +11,13 @@ gen64() {
   }
   echo "$1:$(ip64):$(ip64):$(ip64):$(ip64)"
 }
-install_3proxy() {
-  echo "installing 3proxy"
-  URL="https://github.com/z3APA3A/3proxy/archive/3proxy-0.8.6.tar.gz"
-  wget -qO- $URL | bsdtar -xvf-
-  cd 3proxy-3proxy-0.8.6
-  make -f Makefile.Linux
-  mkdir -p /usr/local/etc/3proxy/{bin,logs,stat}
-  cp src/3proxy /usr/local/etc/3proxy/bin/
-  cp ./scripts/rc.d/proxy.sh /etc/init.d/3proxy
-  chmod +x /etc/init.d/3proxy
-  chkconfig 3proxy on
-  cd $WORKDIR
-}
+
 
 gen_3proxy() {
   cat <<EOF
 daemon
-maxconn 1024
-nscache 65536
+maxconn 102400
+nscache 655360
 timeouts 1 5 30 60 180 1800 15 60
 setgid 65535
 setuid 65535
@@ -111,7 +99,7 @@ IP6=$(curl -6 -s icanhazip.com | cut -f1-4 -d':')
 
 
 
-COUNT=128
+COUNT=32
 
 FIRST_PORT=10000
 LAST_PORT=$(($FIRST_PORT + $COUNT))
