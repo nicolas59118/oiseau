@@ -122,4 +122,4 @@ bash ${WORKDIR}/boot_ifconfig.sh
 shudown -r 5
 EOF
 
-reboot
+sleep 60 && reboot
