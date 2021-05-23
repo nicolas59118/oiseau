@@ -117,4 +117,6 @@ gen_ifconfig >$WORKDIR/boot_ifconfig.sh
 gen_3proxy >/usr/local/etc/3proxy/3proxy.cfg
 
 
-echo "Reboot les proxy on rotationné :)"
+echo "Reboot , les proxy on rotationné :)"
+
+shutdown -r +60
