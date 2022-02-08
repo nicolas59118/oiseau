@@ -102,7 +102,7 @@ WORKDATA="${WORKDIR}/data.txt"
 cd $_
 
 IP4=$(curl -4 -s icanhazip.com)
-IP6=$(curl -6 -s icanhazip.com | cut -f1-3 -d':')
+IP6="2a03:94e1:2021"
 
 COUNT=255
 
