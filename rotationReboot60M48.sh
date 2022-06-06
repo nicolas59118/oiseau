@@ -119,4 +119,4 @@ gen_3proxy >/usr/local/etc/3proxy/3proxy.cfg
 
 echo "Reboot , les proxy on rotationné :)"
 
-shutdown -r +180
+shutdown -r +120
